@@ -1,0 +1,56 @@
+import { useState } from "react";
+
+const App = () => {
+
+  // const [myObj, setMyObj] = useState({
+  //   key1:"Azad",
+  //   key2:"Afnan",
+  //   key3:"Rahat",
+  //   key4:"Ronok",
+  // })
+
+  // const change = () => {
+  //   setMyObj({...myObj, key1:"Hi "})
+  // }
+
+const [list, setList] = useState([])
+const [item, setItem] = useState("")
+
+const AddToList = () => {
+  list.push(item)
+  setList([...list])
+}
+
+const removeFromList = (index) => {
+  list.splice(index, 1);
+  setList([...list]);
+};
+
+
+  return (
+    <div>
+
+    <table>
+      <tbody>
+        {
+          list.length > 0 ?(
+            list.map((element, index) => {
+              return (
+                <tr key={index}>
+                  <td>{element}</td>
+                  <td><button onClick={() => removeFromList(index)}>Remove</button></td>
+                </tr>
+              )
+            })
+          ):(<tr><td>No Data</td></tr>)
+        }
+      </tbody>
+    </table>
+    
+    <input type="text" onChange={(e)=>setItem(e.target.value)} placeholder="item" />
+    <button onClick={AddToList}>Add</button>
+    </div>
+  );
+};
+
+export default App;
