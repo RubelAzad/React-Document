@@ -1,0 +1,20 @@
+import React, { useEffect,useState } from 'react';
+
+const App = () => {
+
+  let [data, setData] = useState();
+ // use effect pass two arguments, first argument is the callback function and second argument is an array
+  useEffect(() => {
+    fetch('https://dummyjson.com/products/1')
+    .then(res=>res.json())
+    .then(json => setData(json)) //promises when api not working that the use in promises then
+  },[])
+
+  return (
+    <div>
+      {JSON.stringify(data)}
+    </div>
+  );
+};
+
+export default App;
