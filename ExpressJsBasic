@@ -1,0 +1,121 @@
+let express = require('express');
+let multer = require('multer');
+let upload = multer();
+let app = express();
+//app.use(bodyParser.json());
+
+app.use(upload.array())
+app.use(express.static('public'));
+
+app.post('/multipart', function (req, res) { 
+    let MultiJSONData = req.body;
+    let MultiJSONString = JSON.stringify(MultiJSONData);
+    res.send(MultiJSONString);
+})
+
+let storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './uploads');
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname);
+    }
+});
+
+let uploadFile = multer({ storage: storage }).single('myfile');
+
+app.post('/upload', function (req, res) {
+    uploadFile(req, res, function (err) {
+        if (err) {
+            return res.end("Something went wrong");
+        }
+        res.end("File uploaded successfully");
+    });
+});
+
+
+app.get('/', function (req, res) {
+    res.send('Home Page');
+});
+
+app.post('/about', function (req, res) { 
+    res.send('About Page');
+})
+app.get('/contact', function (req, res) { 
+    res.end('Contact Page');
+})
+//json response
+app.get('/json', function (req, res) { 
+    let MyJSONArray =[
+        {
+            "id": 1,
+            "name": "John",
+            "age": 30
+        },
+        {
+            "id": 2,
+            "name": "Jane",
+            "age": 25
+        }
+    ]
+
+    res.json(MyJSONArray);
+
+})
+//response download
+app.get('/download', function (req, res) { 
+    res.download('./uploads/download.jpg');
+
+})
+//response Redirect
+app.get('/usa', function (req, res) { 
+    res.redirect('http://localhost:3000/bd');
+
+})
+app.get('/bd', function (req, res) { 
+    res.send('Bangladesh Page');
+})
+//response Header
+app.get('/header', function (req, res) { 
+    res.append('name', 'Rahman');
+    res.append('city', 'Dhaka');
+    res.status(201).end('Header Response');
+})
+
+//response set cookies 
+app.get('/cookie', function (req, res) { 
+    res.cookie('name', 'Rahman');
+    res.cookie('city', 'Dhaka');
+    res.cookie('age', '34 years old');
+    res.status(201).end('cookie Response successfully');
+})
+//response remove cookies 
+app.get('/remove-cookie', function (req, res) { 
+    res.clearCookie('name', 'Rahman');
+    res.clearCookie('city', 'Dhaka');
+    res.status(201).end('Remove Cookie Response successfully');
+})
+
+app.get('/name', function (req, res) { 
+    let firstName = req.query.firstName;
+    let lastName = req.query.lastName;
+    res.end(firstName + ' ' + lastName);
+})
+
+app.get('/name', function (req, res) { 
+    let firstName = req.header('firstName');
+    let lastName = req.header('lastName');
+    res.end(firstName + ' ' + lastName);
+})
+
+//post method
+
+app.post('/post-name', function (req, res) { 
+    let JSONData = req.body;
+    let JSONString = JSON.stringify(JSONData);
+    res.send(JSONString);
+})
+
+app.listen(3000, function () {
+    console.log('Connection is listening on port 3000');
+})
