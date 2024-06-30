@@ -1,0 +1,28 @@
+let express = require('express');
+let app = express();
+//middleware code
+
+// app.use(function(req, res, next) {
+//     console.log('I am inside middleware');
+//     next();
+// })
+app.get('/', function (req, res) {
+    res.send('Home Page');
+});
+//specific middleware routes
+app.use('/about',function(req, res, next) {
+    console.log('I am About Page');
+    next();
+})
+
+app.get('/about', function (req, res) {
+    res.send('About Page');
+});
+
+app.get('/contact', function (req, res) {
+    res.send('Contact Page');
+});
+
+app.listen(3000, function () {
+    console.log('Connection is listening on port 3000');
+})
