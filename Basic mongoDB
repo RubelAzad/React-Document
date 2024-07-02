@@ -1,0 +1,61 @@
+//table create, user model and user table, insert data data, function use for query
+
+const mongoose = require('mongoose');
+
+// database name is testdb
+mongoose.connect('mongodb://127.0.0.1:27017/testdb').then(() => console.log('Database is connected')).catch((err) => console.log(err)); 
+
+//schema (Shape of a document with properties)
+
+//Document, Collection, Database
+//individual object call is Document
+//multiple object/document call is collection
+//multiple collection is call database
+
+//table name is User and table field
+
+const userSchema = new mongoose.Schema({
+    name: String,
+    age: Number,
+    isMarried: Boolean,
+    salary: Number,
+    address: String,
+    gender: String,
+    date: Date,
+    email: String,
+    phone: Number,
+    password: String,
+
+});
+const User = mongoose.model('User', userSchema);
+
+// async function storeInformation(){
+//     const user = new User({
+//         name: 'rahat',
+//         age: 1,
+//         isMarried: true,
+//         salary: 40000,
+//         address: 'Betuan',
+//         gender: 'Male',
+//         date: new Date(),
+//         email: 'rahat@mail.com',
+//         phone: '01736625063',
+//         password: '123456789',
+//     });
+//     await user.save().then(() => console.log(user)).catch((err) => console.log(err));    
+// }
+
+// storeInformation();
+
+async function fetchInformation(){
+    //const users = await User.find({isMarried:false}).select('name age'); //find, findOne, findMany, findAndModify, findAndRemove, findById, findByIdAndRemove, findByIdAndUpdate
+    //const users = await User.find({isMarried:false}).select('-name -age'); // - minus sign is used to exclude the field
+    //const users = await User.find({isMarried:false}).select('name age').sort('salary'); // asec data and given(-) desc data
+    //const users = await User.find({isMarried:false}).select('name age').sort('-salary').limit(2); //limit is used to limit the data
+
+    const users = await User.find({isMarried:false}).countDocuments(); //count data 'countDocuments'
+    console.log(users);
+}
+fetchInformation();
+
+ 
