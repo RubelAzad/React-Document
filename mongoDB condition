@@ -1,0 +1,62 @@
+const mongoose = require('mongoose');
+
+// database name is testdb
+mongoose.connect('mongodb://127.0.0.1:27017/testdb').then(() => console.log('Database is connected')).catch((err) => console.log(err)); 
+
+//schema (Shape of a document with properties)
+
+//Document, Collection, Database
+//individual object call is Document
+//multiple object/document call is collection
+//multiple collection is call database
+
+//table name is User and table field
+
+const userSchema = new mongoose.Schema({
+    name: String,
+    age: Number,
+    isMarried: Boolean,
+    salary: Number,
+    address: String,
+    gender: String,
+    date: Date,
+    email: String,
+    phone: Number,
+    password: String,
+
+});
+const User = mongoose.model('User', userSchema);
+//comparison operator
+//eq
+//ne
+//gt
+//gte
+//lt
+//lte
+//in (1,2,3) or [1,2,3] like where condition
+//nin excludes 1,2,3
+
+//and 
+// or
+// not
+
+
+
+async function fetchInformation(){
+
+    //const users = await User.find({age:{$gt:25}}); // greater than 25 conditionally
+    //const users = await User.find({age:{$gte:1}}); //greater than or equal to 1
+    //const users = await User.find({age:{$lt:1}}); //less than to 1
+    //const users = await User.find({age:{$lte:1}}); //less than or equal to 1
+    //const users = await User.find({age:{$ne:1}}); //not equal to 1
+    //const users = await User.find({salary:{$in:([50000,40000,30000])}}); //in (1,2,3) or [1,2,3] like where condition
+
+    //const users = await User.find().or([{age:30}, {isMarried:false}]); //or condition
+    const users = await User.find().and([{age:34}, {isMarried:false}]); //and condition
+ 
+
+    console.log(users);
+}
+fetchInformation();
+
+ 
